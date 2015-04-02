@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+log="/pentest/logs/vulnscan.log"
+
+if [[ -e "$log" ]]; then
+	rm -vf "$log"
+fi
+
+msfconsole

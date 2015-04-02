@@ -1,0 +1,32 @@
+#!/bin/zsh -li
+
+export csv="$1"
+
+export dir="/pentest/targets/vulnscan"
+
+ports=(
+	80
+	8080
+	443
+)
+
+echo "Will parse "$csv" and save results in "$dir""
+
+function parse () {
+	if [[ -e "$dir"/"$port" ]];then
+		mv -f "$dir"/"$port" "$dir"/"$port".old
+		csvcut -c Port,IP "$csv" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$dir"/"$port".new
+		eh -4 -d "$dir"/"$port".{old,new} > "$dir"/"$port"
+
+		echo "same ("$port"): $(comm -12 "$dir"/"$port" "$dir"/"$port.old" |wc -l)"
+		echo "new ("$port"): $(comm -23 "$dir"/"$port" "$dir"/"$port.old" |wc -l)"
+		echo "old ("$port"): $(comm -13 "$dir"/"$port" "$dir"/"$port.old" |wc -l)"
+		echo "final ("$port"): $(eh -4 -d "$dir"/"$port" |wc -l)"
+	else
+		csvcut -c Port,IP "$csv" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$dir"/"$port"
+	fi
+}
+
+for port in $ports;do
+	parse
+done

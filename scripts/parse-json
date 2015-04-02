@@ -1,0 +1,41 @@
+#!/bin/zsh -li
+
+export json="$1"
+
+export dir="/pentest/targets/vulnscan"
+
+ports=( 80 8080 443 )
+
+echo "Will parse "$json" and save results in "$dir""
+
+function parse(){
+	if [[ -e "$dir"/"$port" ]];then
+		mv "$dir"/"$port" "$dir"/"$port".old
+		shodan parse --no-color --fields port,ip_str "$json" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$dir"/"$port".new
+		eh -4 -d "$dir"/"$port".{old,new} > "$dir"/"$port"
+
+		echo "same ("$port"): $(comm -12 "$dir"/"$port" "$dir"/"$port.old" |wc -l)"
+		echo "new ("$port"): $(comm -23 "$dir"/"$port" "$dir"/"$port.old" |wc -l)"
+		echo "old ("$port"): $(comm -13 "$dir"/"$port" "$dir"/"$port.old" |wc -l)"
+		echo "final ("$port"): $(eh -4 -d "$dir"/"$port" |wc -l)"
+	else
+		shodan parse --no-color --fields port,ip_str "$json" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$dir"/"$port"
+	fi
+}
+
+function count() {
+
+	# if [[ -e "$dir/"$port".old" ]];then
+		# echo "same: $(comm -12 "$dir"/"$port" "$dir"/"$port.old" |wc -l)"
+		# echo "new: $(comm -23 "$dir"/"$port" "$dir"/"$port.old" |wc -l)"
+		# echo "old: $(comm -13 "$dir"/"$port" "$dir"/"$port.old" |wc -l)"
+		# echo "final: $(eh -4 -d "$dir"/"$port" |wc -l)"
+	# fi
+
+	rm -f "$dir"/*.{old,new}
+}
+
+for port in "$ports[@]"; do
+	parse
+	count
+done

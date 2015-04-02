@@ -1,0 +1,3 @@
+clear
+sessions
+multi_post -m post/windows/gather/enum_domain -s all

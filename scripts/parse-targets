@@ -1,0 +1,29 @@
+#!/bin/zsh -li
+
+ports=(
+	80
+	8080
+	443
+)
+
+export dir="/pentest/targets"
+export log="$1"
+
+echo "Will parse "$log" and save results in "$dir""
+
+function parse () {
+	if [[ -e "$dir"/"$port" ]];then
+		mv -vf "$dir"/"$port" "$dir"/"$port".old
+	fi
+
+	egrep ":"$port"\b .*does not require" "$log" | eh -4 -d |sort -u > "$dir"/"$port"
+}
+
+function count () {
+	wc -l "$dir"/"$port"
+}
+
+for port in $ports;do
+	parse
+	count
+done

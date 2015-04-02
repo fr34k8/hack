@@ -1,0 +1,25 @@
+popup beacon_top {
+
+item "Net View" {
+	local('$bid');
+		foreach $bid ($1) {
+			netview($bid);
+	}
+}
+
+item "Sysinfo" {
+	local('$bid');
+		foreach $bid ($1) {
+			sysinfo($bid);
+	}
+}
+
+}
+
+sub netview {
+   bshell($1, 'net view /domain');
+}
+
+sub sysinfo {
+   bshell($1, 'systeminfo');
+}
