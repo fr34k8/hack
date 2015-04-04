@@ -43,7 +43,7 @@ sub task_powershell {
     call_async("beacon.log_write", $id, "[*] Tasked beacon to run: $2 $+ \n");
 }
 
-sub task_netdom {
+sub task_getdom {
     $beacon_id = $1;
     $script_source = script_resource("powerview.ps1");
 
