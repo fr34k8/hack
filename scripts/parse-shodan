@@ -1,27 +1,27 @@
 #!/bin/zsh -li
 
 export file="$1"
-export dir="/pentest/targets/vulnscan"
+#export dir="/pentest/targets/vulnscan"
 
 ports=( 80 8080 443 )
 
 vared -c -p "JSON or CSV: " type
 
-echo "Will parse "$file" and save results in "$dir""
+#echo "Will parse "$file" and save results in "$dir""
 
 function parse () {
-	if [[ -e "$dir"/"$port" ]]; then
-		mv "$dir"/"$port" "$dir"/"$port".old
+	if [[ -e "$port" ]]; then
+		mv "$port" "$port".old
 	fi
 
 	if [[ "$type" = "json" ]]; then
-		shodan parse --no-color --fields port,ip_str "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$dir"/"$port".new
-		eh -4 -d "$dir"/"$port.new" "$dir"/"$port.old" > "$dir"/"$port"
-		comm -23 "$dir"/"$port.new" "$dir"/"$port.old" > "$dir"/"$port".unique
+		shodan parse --no-color --fields port,ip_str "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port".new
+		eh -4 -d "$port.new" "$port.old" > "$port"
+		comm -23 "$port.new" "$port.old" > "$port".unique
 	else
-		csvcut -c Port,IP "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$dir"/"$port".new
-		eh -4 -d "$dir"/"$port.new" "$dir"/"$port.old" > "$dir"/"$port"
-		comm -23 "$dir"/"$port.new" "$dir"/"$port.old" > "$dir"/"$port".unique
+		csvcut -c Port,IP "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port".new
+		eh -4 -d "$port.new" "$port.old" > "$port"
+		comm -23 "$port.new" "$port.old" > "$port".unique
 	fi
 
 }
@@ -29,13 +29,13 @@ function parse () {
 function count () {
 	# Totals
 	echo "Totals:"
-	echo ""$port"": $(eh -4 -d "$dir"/"$port"  |wc -l)""
-	echo ""$port.new"": $(eh -4 -d "$dir"/"$port.new" |wc -l)""
-	echo ""$port.old"": $(eh -4 -d "$dir"/"$port.old" |wc -l)""
+	echo ""$port"": $(eh -4 -d "$port"  |wc -l)""
+	echo ""$port.new"": $(eh -4 -d "$port.new" |wc -l)""
+	echo ""$port.old"": $(eh -4 -d "$port.old" |wc -l)""
 	# Unique
 	echo "Unique:"
-	if [[ -e "$dir"/"$port".unique ]];then
-		echo ""$port"": $(eh -4 -d "$dir"/"$port".unique  |wc -l)""
+	if [[ -e "$port".unique ]];then
+		echo ""$port"": $(eh -4 -d "$port".unique  |wc -l)""
 	fi
 }
 
