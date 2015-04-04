@@ -1,12 +1,3 @@
-popup beacon_top {
-  item "Get-NetDomain" {
-      local('$bid');
-      foreach $bid ($1) {
-         task_getdom($bid);
-      }
-   }
-}
-
 on heartbeat_30s {
 	local('@beacons $beacon $bid %data @new @all');
 
@@ -17,6 +8,16 @@ on heartbeat_30s {
 	%data[$bid] = $beacon;
 	push(@all, $bid);
 	}
+}
+
+
+popup beacon_top {
+  item "Get-NetDomain" {
+      local('$bid');
+      foreach $bid ($1) {
+         task_getdom($bid);
+      }
+   }
 }
 
 sub task_powershell_import {
@@ -44,7 +45,7 @@ sub task_powershell {
 
 sub task_netdom {
     $beacon_id = $1;
-    $script_source = script_resource("PowerView.ps1");
+    $script_source = script_resource("powerview.ps1");
 
     # get all of our data that we're going to upload
     $handle = openf($script_source);
