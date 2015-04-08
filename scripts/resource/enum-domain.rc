@@ -1,0 +1,6 @@
+clear
+sessions
+sleep 2
+multi_meter_cmd -c 'sysinfo' -s all
+sleep 5
+multi_post -m post/windows/gather/enum_domain -s all
