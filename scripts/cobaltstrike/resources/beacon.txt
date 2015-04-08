@@ -1,0 +1,309 @@
+beacon> help
+
+Beacon Commands
+===============
+
+    Command                   Description
+    -------                   -----------
+    bypassuac                 Spawn a session in a high integrity process
+    cd                        Change directory
+    checkin                   Call home and post data
+    clear                     Clear beacon queue
+    download                  Download a file
+    execute                   Execute a program on target
+    exit                      Terminate the beacon session
+    getsystem                 Attempt to get SYSTEM
+    getuid                    Get User ID
+    help                      Help menu
+    inject                    Spawn a session in a specific process
+    kerberos_ticket_purge     Purge kerberos tickets from this session
+    kerberos_ticket_use       Apply kerberos ticket to this session
+    keylogger start           Start the keystroke logger
+    keylogger stop            Stop the keystroke logger
+    kill                      Kill a process
+    link                      Connect to a Beacon peer over SMB
+    message                   Display a message to user on desktop
+    meterpreter               Spawn a Meterpreter session
+    mode dns                  Use DNS A as data channel (DNS beacon only)
+    mode dns-txt              Use DNS TXT as data channel (DNS beacon only)
+    mode http                 Use HTTP as data channel
+    mode smb                  Use SMB peer-to-peer communication
+    powershell                Execute a command via powershell
+    powershell-import         Import a powershell script
+    ps                        Show process list
+    pwd                       Print current directory
+    rev2self                  Revert to original token
+    runas                     Execute a program as another user.
+    shell                     Execute a command via cmd.exe
+    sleep                     Set beacon sleep time
+    socks                     Start SOCKS4a server to relay traffic
+    socks stop                Stop SOCKS4a server
+    spawn                     Spawn a session 
+    spawnto                   Set executable to spawn processes into
+    steal_token               Steal access token from a process
+    task                      Download and execute a file from a URL
+    timestomp                 Apply timestamps from one file to another
+    unlink                    Disconnect from parent Beacon
+    upload                    Upload a file
+
+beacon> help kerberos_ticket_purge
+Use: kerberos_ticket_purge
+
+Purges kerberos tickets from this session
+
+beacon> help kerberos_ticket_use
+Use: kerberos_ticket_use [/path/to/file.ticket]
+
+Applies a kerberos ticket to this session
+
+beacon> help kill
+Use: kill [process id]
+
+Kills the specified process
+
+beacon> help ps
+Use: ps
+
+Shows a list of processes
+
+beacon> help timestomp
+Use: timestomp [fileA] [fileB]
+
+Update the Modified, Access, and Created times of fileA to match those of fileB
+
+beacon> help bypassuac
+Use: bypassuac [listener]
+
+Spawn a session in a high integrity process. Use this command to elevate from a
+process run by an administrator, but without administrator rights to a high 
+integrity process with the user's full rights. This command drops a DLL to disk,
+uses a trust loophole to copy the DLL to a system folder, and executes a program
+that auto-elevates to high integrity to load the DLL. 
+
+beacon> help getuid
+Use: getuid
+
+Prints the User ID associated with the current token
+
+beacon> help rev2self
+Use: rev2self
+
+Revert to your original access token
+
+beacon> help steal_token
+Use: steal_token [pid]
+
+Steal an access token from a process.
+
+beacon> help getsystem
+Use: getsystem
+
+Attempts to get SYSTEM
+
+beacon> help link
+Use: link [ip address] 
+
+Connect to a waiting Beacon and re-establish control of it. All requests for 
+connected Beacon will go through this Beacon.
+
+beacon> help unlink
+Use: unlink
+
+Disconnect parent Beacon. Wait for a connection from another Beacon.
+
+beacon> help cd
+Use: cd [directory]
+
+Change directory on host
+
+beacon> help checkin
+Use: checkin
+
+Forces DNS Beacon to connect to you. During a checkin Beacon posts its host
+metadata and dumps logged keystrokes.
+
+beacon> help clear
+Use: clear
+
+Clear beacon queue
+
+beacon> help download
+Use: download [file]
+
+Download a file. Go to View -> Downloads to see it
+
+beacon> help shell
+Use: shell [command] [arguments]
+
+Execute the command using cmd.exe
+
+beacon> help powershell
+Use: powershell [commandlet] [arguments]
+
+Execute the command using powershell. Any cmdlets from the
+last use of powershell-import are available here too.
+
+beacon> help powershell-import
+Use: powershell-import [/path/to/local/script.ps1]
+
+Import a powershell script which is combined with future
+calls to the powershell command. You may only use one
+imported script at a time.
+
+beacon> help execute
+Use: execute [program] [arguments]
+
+Execute the program
+
+beacon> help exit
+Use: exit
+
+Terminate the beacon session
+
+beacon> help help
+Use: help [command]
+
+Display help for a command
+
+beacon> help inject
+Use: inject [pid] [listener]
+
+Open the process and inject shellcode for the listener
+
+beacon> help keylogger
+Use: keylogger [start|stop]
+
+Start or stop the Beacon keystroke logger.
+
+beacon> help link
+Use: link [ip address]
+
+Link to the Beacon at the specified IP address.
+
+beacon> help unlink
+Use: unlink [ip address]
+
+Disconnect the specified Beacon.
+
+beacon> help message
+Use: message [text]
+
+Display a message to the user. This is a silly command.
+
+beacon> help runas
+Use: runas [DOMAIN\user] [password] [command] [arguments]
+
+Attempt to execute a program as another user. If you don't specify DOMAIN,
+Beacon will try to authenticate as a local user.
+
+beacon> help meterpreter
+Use: meterpreter
+
+Create a Meterpreter session on the Beacon host. Meterpreter session will
+tunnel through Beacon. 
+
+beacon> help mode
+Use: mode [dns|dns-txt|http]
+
+Sets Beacon's mode to exchange data with the end-user. This only has an effect
+on a DNS beacon.
+
+mode dns
+--------
+Get tasks with DNS A record requests. Use this option to communicate with DNS 
+hen TXT records are not an option. Sends data as DNS requests with data encoded
+inside of the hostname.
+
+mode dns-txt
+------------
+Get tasks with DNS TXT record requests. This channel carries 189 bytes per 
+request versus 4 bytes for a DNS A record request. Sends data with the same
+technique as the other DNS mode.
+
+mode http
+---------
+Get tasks with HTTP GET requests. Sends data back with HTTP POST requests.
+
+mode smb
+--------
+Stop beaconing. Wait for a connection from another Beacon over SMB. Use link
+from another Beacon to regain control of this Beacon.
+
+beacon> help socks
+Use: socks [stop|port]
+
+Starts a SOCKS4a server on the specified port. This server will relay 
+connections through this Beacon. 
+
+Use socks stop to stop the SOCKS4a server and terminate existing connections.
+
+Traffic will not relay while Beacon is asleep. Change the sleep time with the
+sleep command to reduce latency.
+
+beacon> help sleep
+Use: sleep [time in seconds] <jitter>
+
+Change how often the beacon calls home. Use sleep 0 to force Beacon to call 
+home many times each second. 
+
+Specify a jitter value (0-99) to force Beacon to randomly modify its sleep time.
+
+beacon> help spawn
+Use: spawn [listener]
+
+Inject shellcode for the listener
+
+beacon> help spawnto
+Use: spawnto [c:\path\to\whatever.exe]
+
+Sets the executable to spawn shellcode into. Omit the path to use a sane default
+
+beacon> help task
+Use: task [url]
+
+Task host to download and execute the file at the URL
+
+beacon> help upload
+Use: upload [/path/to/file]
+
+Upload a file to host
+
+beacon> help pwd
+Use: pwd
+
+Displays the current working directory of this Beacon.
+
+beacon> sleep
+[-] I need a time (in seconds) to do that
+beacon> message
+[-] I need a message to display
+beacon> shell
+[-] I need a command to execute
+beacon> execute
+[-] I need a program to execute
+beacon> cd
+[-] I need a directory
+beacon> inject
+[-] I need a process id and a listener to inject
+beacon> keylogger
+[-] Would you like to stop or start the keystroke logger?
+beacon> mode
+[-] I need a mode! dns, dns-txt, http, or smb, please.
+beacon> task
+[-] I need a URL to download from
+beacon> download
+[-] I need a file to download
+beacon> socks
+[-] I need a port to start the server on
+beacon> link
+[-] I need an IP address to connect to
+beacon> unlink
+[-] I need an IP address to disconnect from
+beacon> timestomp
+[-] I need files to timestomp
+beacon> kill
+[-] I need a process identifier
+beacon> powershell
+[-] I need a command to run
+beacon> runas
+[-] I need some parameters

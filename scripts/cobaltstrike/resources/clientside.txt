@@ -1,0 +1,229 @@
+#
+# Cloud Strike client-side attack database... *pHEAR*
+#
+# exploit name				application	ver string	<= ver
+
+# Java exploits
+multi/browser/java_rhino		Java		1.6.0_(\d+)	28
+multi/browser/java_rhino		Java		1.7.0
+multi/browser/java_calendar_deserialize	Java		1.6.0_(\d+)	10
+multi/browser/java_calendar_deserialize	Java		1.5.0_(\d+)	16
+multi/browser/java_getsoundbank_bof	Java		1.6.0_(\d+)	16
+multi/browser/java_getsoundbank_bof	Java		1.5.0_(\d+)	21
+multi/browser/java_getsoundbank_bof	Java		1.4.2_(\d+)	23
+multi/browser/java_getsoundbank_bof	Java		1.3.1_(\d+)	26
+windows/browser/java_mixer_sequencer	Java		1.6.0_(\d+)	18
+
+multi/browser/java_atomicreferencearray	Java		1.6.0_(\d+)	30
+multi/browser/java_atomicreferencearray	Java		1.5.0_(\d+)	33
+multi/browser/java_atomicreferencearray	Java		1.7.0_(\d+)	2
+
+multi/browser/java_jre17_exec		Java		1.7.0_(\d+)	6
+multi/browser/java_jre17_jaxws		Java		1.7.0_(\d+)	7
+multi/browser/java_jre17_jmxbean	Java		1.7.0_(\d+)	10
+multi/browser/java_jre17_jmxbean_2	Java		1.7.0_(\d+)	11
+multi/browser/java_jre17_reflection_types	Java	1.7.0_(\d+)	17
+
+windows/browser/java_cmm		Java		1.7.0_(\d+)	15
+windows/browser/java_cmm		Java		1.6.0_(\d+)	41
+
+multi/browser/java_verifier_field_access	Java	1.7.0_(\d+)	4
+multi/browser/java_verifier_field_access	Java	1.6.0_(\d+)	32
+multi/browser/java_verifier_field_access	Java	1.5.0_(\d+)	35
+multi/browser/java_verifier_field_access	Java	1.4.2_(\d+)	37
+
+multi/browser/java_jre17_glassfish_averagerangestatisticimpl	Java	1.7.0_(\d+)	7
+multi/browser/java_jre17_method_handle				Java	1.7.0_(\d+)	7
+
+windows/browser/java_ws_double_quote				Java	1.6.0_(\d+)	35
+windows/browser/java_ws_double_quote				Java	1.7.0_(\d+)	7
+
+multi/browser/java_jre17_driver_manager				Java	1.7.0_(\d+)	17
+multi/browser/java_jre17_provider_skeleton			Java	1.7.0_(\d+)	21
+multi/browser/java_storeimagearray				Java	1.7.0_(\d+)	21
+
+	# theoretically, this works with other vers of Java but its only been tested
+	# with updates 16 and 11 of Java 1.6
+multi/browser/java_setdifficm_bof	Java		1.6.0_16
+multi/browser/java_setdifficm_bof	Java		1.6.0_11
+
+# Firefox exploits (done)
+windows/browser/mozilla_nstreerange		Firefox		3.6.(\d+)	16
+windows/browser/mozilla_nstreerange		Firefox		3.5.(\d+)	15
+windows/browser/mozilla_reduceright		Firefox		3.6.16
+windows/browser/mozilla_mchannel		Firefox		3.6.16
+osx/browser/mozilla_mchannel			Firefox		3.6.16
+multi/browser/firefox_escape_retval		Firefox		3.5.0
+multi/browser/firefox_queryinterface		Firefox		1.5.0
+windows/browser/mozilla_nssvgvalue		Firefox		7.\d+.\d+
+windows/browser/mozilla_nssvgvalue		Firefox		8.0.0
+windows/browser/mozilla_nssvgvalue		Firefox		8.0.1
+windows/browser/mozilla_attribchildremoved	Firefox		8.0.0
+windows/browser/mozilla_attribchildremoved	Firefox		8.0.1
+windows/browser/mozilla_attribchildremoved	Firefox		9.0.0
+windows/browser/mozilla_attribchildremoved	Firefox		9.0.1
+multi/browser/firefox_webidl_injection		Firefox		2[234567].\d+.\d+
+multi/browser/firefox_tostring_console_injection	Firefox	1[56789].\d+.\d+
+multi/browser/firefox_tostring_console_injection	Firefox	2[012].\d+.\d+
+
+# blehz...
+multi/browser/firefox_proto_crmfrequest		Firefox		15.0.\d+	1
+multi/browser/firefox_proto_crmfrequest		Firefox		1[43210].\d+.\d+
+multi/browser/firefox_proto_crmfrequest		Firefox		[98765].\d+.\d+
+
+# this is kind of a neat exploit, it doesn't rely on memory corruption
+multi/browser/firefox_svg_plugin		Firefox		17.0
+multi/browser/firefox_svg_plugin		Firefox		17.0.\d+	1
+
+# Internet Explorer Exploits (done)
+
+# keep this exploit in sync with 6.0.3790.1830 (03/29/2006) and other places it works. They're 2006 attacks
+windows/browser/ie_createobject			Internet Explorer	6.0.\d+.\d+	20060401
+windows/browser/ie_createobject			Internet Explorer *64	6.0.\d+.\d+	20060401
+
+windows/browser/ms09_002_memory_corruption	Internet Explorer	7.0.\d+.\d+	20090105
+windows/browser/ms09_072_style_object		Internet Explorer	6.0.\d+.\d+	20091026
+windows/browser/ms09_072_style_object		Internet Explorer	7.0.\d+.\d+	20091026
+windows/browser/ms10_002_aurora			Internet Explorer	6.0.\d+.\d+	20091216
+windows/browser/ms10_002_ie_object		Internet Explorer	8.0.\d+.\d+	20091216
+windows/browser/ms10_018_ie_behaviors		Internet Explorer	6.0.\d+.\d+	20100218
+windows/browser/ms10_018_ie_behaviors		Internet Explorer	7.0.\d+.\d+	20100218
+windows/browser/ms10_090_ie_css_clip		Internet Explorer	6.0.\d+.\d+	20101019	
+windows/browser/ms10_090_ie_css_clip		Internet Explorer	7.0.\d+.\d+	20101019
+windows/browser/ms11_003_ie_css_import		Internet Explorer	8.0.\d+.\d+	20101217
+windows/browser/ms11_003_ie_css_import		Internet Explorer	7.0.\d+.\d+	20101217
+windows/browser/ms11_003_ie_css_import		Internet Explorer	6.0.\d+.\d+	20101217
+windows/browser/ms11_050_mshtml_cobjectelement	Internet Explorer	8.0.\d+.\d+	20110420
+windows/browser/ms11_050_mshtml_cobjectelement	Internet Explorer	7.0.\d+.\d+	20110420
+windows/browser/ms11_081_option			Internet Explorer	8.0.\d+.\d+	20110831
+windows/browser/ms12_037_same_id		Internet Explorer	8.0.\d+.\d+	20120514
+windows/browser/ms13_009_ie_slayoutrun_uaf	Internet Explorer	8.0.\d+.\d+	20130107
+windows/browser/ms13_037_svg_dashstyle		Internet Explorer	8.0.\d+.\d+	20130403
+windows/browser/ms13_059_cflatmarkuppointer	Internet Explorer	9.0.\d+.\d+	20130724
+windows/browser/ms13_055_canchor		Internet Explorer	8.0.\d+.\d+	20130606
+windows/browser/ms13_069_caret			Internet Explorer	8.0.\d+.\d+	20130730
+
+
+windows/browser/ie_setmousecapture_uaf		Internet Explorer	9.0.\d+.\d+	20130915
+windows/browser/ms13_080_cdisplaypointer	Internet Explorer	8.0.\d+.\d+	20130915
+windows/browser/ms13_080_cdisplaypointer	Internet Explorer	7.0.\d+.\d+	20130915
+
+						# update the "fix date" when it is known.
+windows/browser/msxml_get_definition_code_exec	Internet Explorer	6.0.\d+.\d+	20120619
+windows/browser/msxml_get_definition_code_exec	Internet Explorer	7.0.\d+.\d+	20120619
+windows/browser/msxml_get_definition_code_exec	Internet Explorer	8.0.\d+.\d+	20120619
+windows/browser/msxml_get_definition_code_exec	Internet Explorer	9.0.\d+.\d+	20120619
+
+						# august?
+windows/browser/ie_execcommand_uaf		Internet Explorer	7.0.\d+.\d+	20120823
+windows/browser/ie_execcommand_uaf		Internet Explorer	8.0.\d+.\d+	20120823
+windows/browser/ie_execcommand_uaf		Internet Explorer	9.0.\d+.\d+	20120823
+
+						# december 2012
+windows/browser/ie_cbutton_uaf			Internet Explorer	8.0.\d+.\d+	20121229
+
+# technically, this exploit only works on IE versions between August 2013 and February 2014.
+# need a way to better narrow IE exploits...
+windows/browser/ms14_012_textrange		Internet Explorer	9.0.\d+.\d+	20140301
+windows/browser/ms14_012_cmarkup_uaf		Internet Explorer	10.0.\d+.\d+	20140301
+windows/browser/ms14_012_cmarkup_uaf		Internet Explorer	10.0		20140301
+
+# Flash exploits (good?)
+windows/browser/adobe_flashplayer_avm			Adobe Flash	10.2.152.(\d+)		33
+windows/browser/adobe_flashplayer_avm			Adobe Flash	10.2.(\d+).\d+		151
+windows/browser/adobe_flashplayer_avm			Adobe Flash	10.1.\d+.\d+
+windows/browser/adobe_flashplayer_avm			Adobe Flash	[987].\d+.\d+.\d+
+windows/browser/adobe_flashplayer_flash10o		Adobe Flash	10.2.153.1
+windows/browser/adobe_flashplayer_newfunction		Adobe Flash	10.0.42.34
+windows/browser/adobe_flashplayer_newfunction		Adobe Flash	10.0.45.2
+windows/fileformat/adobe_flashplayer_newfunction	Adobe Flash	10.0.42.34
+windows/fileformat/adobe_flashplayer_newfunction	Adobe Flash	10.0.45.2
+windows/browser/adobe_flash_mp4_cprt			Adobe Flash	10.3.183.(\d+)		15
+windows/browser/adobe_flash_mp4_cprt			Adobe Flash	10.(\d+).\d+.\d+	3
+windows/browser/adobe_flash_mp4_cprt			Adobe Flash	11.1.102.(\d+)	 	62
+windows/browser/adobe_flash_mp4_cprt			Adobe Flash	11.1.(\d+).\d+	 	102
+windows/browser/adobe_flash_mp4_cprt			Adobe Flash	[987].\d+.\d+.\d+
+windows/browser/adobe_flashplayer_arrayindexing		Adobe Flash	10.3.181.(\d+)		23
+windows/browser/adobe_flash_rtmp			Adobe Flash	10.3.183.19
+windows/browser/adobe_flash_rtmp			Adobe Flash	11.2.202.(\d+)		235
+windows/browser/adobe_flash_rtmp			Adobe Flash	11.2.(\d+).\d+		201
+windows/browser/adobe_flash_rtmp			Adobe Flash	11.(\d+).\d+.\d+	1
+windows/browser/adobe_flash_otf_font			Adobe Flash	11.3.300.(\d+)		270
+windows/browser/adobe_flash_otf_font			Adobe Flash	11.3.(\d+).\d+		299
+linux/browser/adobe_flashplayer_aslaunch		Adobe Flash	10.0.12.36
+
+windows/browser/adobe_flash_pixel_bender_bof		Adobe Flash	11.7.700.(\d+)		276
+windows/browser/adobe_flash_pixel_bender_bof		Adobe Flash	11.8.800.(\d+)		169
+windows/browser/adobe_flash_pixel_bender_bof		Adobe Flash	13.0.0.182
+
+# Real Player Exploits
+windows/fileformat/real_player_url_property_bof		Real Player	15.0.5.109
+windows/fileformat/realplayer_ver_attribute_bof		Real Player	16.0.3.51
+windows/fileformat/realplayer_ver_attribute_bof		Real Player	16.0.2.32 
+
+# QuickTime Exploits (good!)
+windows/browser/apple_quicktime_marshaled_punk	Apple QuickTime		7.6.7.0
+windows/browser/apple_quicktime_marshaled_punk	Apple QuickTime		7.6.6.0
+windows/browser/apple_quicktime_smil_debug	Apple QuickTime		7.6.6.0
+windows/browser/apple_quicktime_rtsp		Apple QuickTime		7.1.3.0
+windows/fileformat/apple_quicktime_pnsize	Apple QuickTime		7.6.9.0
+windows/fileformat/apple_quicktime_texml	Apple QuickTime		7.6.9.0
+windows/fileformat/apple_quicktime_texml	Apple QuickTime		7.7.0.0
+windows/fileformat/apple_quicktime_texml	Apple QuickTime		7.7.1.0
+windows/misc/apple_quicktime_rtsp_response	Apple QuickTime		7.3.1.\d+
+osx/rtsp/quicktime_rtsp_content_type		Apple QuickTime		7.0.0.\d+
+osx/rtsp/quicktime_rtsp_content_type		Apple QuickTime		7.1.3.\d+
+osx/rtsp/quicktime_rtsp_content_type		Apple QuickTime		7.2.1.\d+
+
+	# borderline useless, only tested with Safari?!?
+windows/browser/apple_quicktime_mime_type	Apple QuickTime		7.7.2.0
+windows/fileformat/apple_quicktime_rdrf		Apple QuickTime		7.7.(\d+).\d+	3
+windows/browser/apple_quicktime_rdrf		Apple QuickTime		7.7.(\d+).\d+	3
+
+# Adobe Acrobat Reader exploits
+windows/browser/adobe_geticon			Adobe Reader	7.1.(\d+)	1
+windows/browser/adobe_geticon			Adobe Reader	8.1.(\d+)	3
+windows/browser/adobe_geticon			Adobe Reader	9.1.0
+windows/fileformat/adobe_geticon		Adobe Reader	7.1.(\d+)	1
+windows/fileformat/adobe_geticon		Adobe Reader	8.1.(\d+)	3
+windows/fileformat/adobe_geticon		Adobe Reader	9.1.0
+windows/browser/adobe_jbig2decode		Adobe Reader	9.0.0
+windows/browser/adobe_jbig2decode		Adobe Reader	8.1.2
+windows/fileformat/adobe_jbig2decode		Adobe Reader	9.0.0
+windows/fileformat/adobe_jbig2decode		Adobe Reader	8.1.2
+windows/browser/adobe_cooltype_sing		Adobe Reader	8.2.(\d+)	4
+windows/browser/adobe_cooltype_sing		Adobe Reader	9.3.(\d+)	4
+
+windows/fileformat/adobe_reader_u3d		Adobe Reader	9.4.0
+windows/fileformat/adobe_reader_u3d		Adobe Reader	9.4.5
+windows/fileformat/adobe_reader_u3d		Adobe Reader	9.4.6
+
+# cooltype sing didn't work in Adobe Reader 8.2.0
+windows/fileformat/adobe_cooltype_sing		Adobe Reader	8.2.(\d+)	4
+windows/fileformat/adobe_cooltype_sing		Adobe Reader	9.3.(\d+)	4
+windows/browser/adobe_media_newplayer		Adobe Reader	9.2.0
+windows/browser/adobe_media_newplayer		Adobe Reader	9.1.(\d+)	99
+windows/fileformat/adobe_media_newplayer	Adobe Reader	9.2.0
+windows/fileformat/adobe_media_newplayer	Adobe Reader	9.1.(\d+)	99
+windows/browser/adobe_utilprintf		Adobe Reader	8.1.2
+windows/fileformat/adobe_utilprintf		Adobe Reader	8.1.2
+windows/fileformat/adobe_collectemailinfo	Adobe Reader	8.1.1
+windows/local/adobe_sandbox_adobecollabsync	Adobe Reader	10.1.4
+
+# toolbutton... latest ver it targets
+windows/fileformat/adobe_toolbutton		Adobe Reader	11.0.(\d+)	2
+windows/fileformat/adobe_toolbutton		Adobe Reader	10.1.(\d+)	6
+windows/fileformat/adobe_toolbutton		Adobe Reader	9.5.(\d+)	4
+windows/browser/adobe_toolbutton		Adobe Reader	11.0.(\d+)	2
+windows/browser/adobe_toolbutton		Adobe Reader	10.1.(\d+)	6
+
+# rules for older...
+windows/browser/adobe_toolbutton		Adobe Reader	10.0.(\d+)	99
+windows/fileformat/adobe_toolbutton		Adobe Reader	10.0.(\d+)	99
+windows/fileformat/adobe_toolbutton		Adobe Reader	9.(\d+).\d+	4
+
+# Silverlight... 
+windows/browser/ms13_022_silverlight_script_object	MS Silverlight	5.0.60401.\d+
+windows/browser/ms13_022_silverlight_script_object	MS Silverlight	5.0.60818.\d+
+windows/browser/ms13_022_silverlight_script_object	MS Silverlight	5.0.61118.\d+	
+

