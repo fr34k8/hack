@@ -9,19 +9,17 @@ function parse () {
 	if [[ -e "$port" ]]; then
 		mv "$port" "$port".old
 		shodan parse --no-color --fields port,ip_str "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port".new
-		comm -23 "$port".new "$port.old" > "$port"
-#		eh -4 -d "$port.new" "$port.old" |sort -u > "$port"
+		eh -4 -d "$port.new" "$port.old" |sort -u > "$port"
 		rm *.new *old
 	else
 		shodan parse --no-color --fields port,ip_str "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port"
 	fi
-
 }
 
 function count () {
-# Totals
-	echo "Totals:"
-	echo ""$port"": $(eh -4 -d "$port"  |wc -l)""
+	for p in "${ports}";do
+		echo ""$p"": $(eh -4 -d "$port"  |wc -l)""
+	done
 }
 
 for port in "$ports[@]"; do

