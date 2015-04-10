@@ -6,7 +6,7 @@ ports=(
 	443
 )
 
-export dir="/pentest/targets"
+export dir="$(pwd)"
 export log="$1"
 
 echo "Will parse "$log" and save results in "$dir""
