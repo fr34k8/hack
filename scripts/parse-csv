@@ -2,7 +2,7 @@
 
 export csv="$1"
 
-export dir="/pentest/targets/vulnscan"
+export dir="$(pwd)"
 
 ports=(
 	80
