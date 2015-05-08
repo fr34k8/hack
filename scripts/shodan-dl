@@ -1,12 +1,25 @@
 #!/bin/zsh -li
 
-export countries="$1"
-vared -c -p "After: " date
+vared -ch -p "countries: " cns
+#vared -cph "date: " date
 
-for cn in "$countries";do
-	if [[ -e "$cn".json.gz ]]; then
-		mv -vf "$cn".json.gz "$cn".json.gz.old
-	fi
+countries=( $cns )
+
+function count () {
+	for cn in "countries";do
+		echo "$cn"
+		shodan count jboss country:$cn after:"$date"
+	done
+}
+
+function download () {
+#	for cn in "$countries";do
+		if [[ -e "$cn".json.gz ]]; then
+			mv -vf "$cn".json.gz "$cn".json.gz.old
+		fi
 
 	shodan download --limit=30000 "$cn".json.gz jboss country:"$cn" after:"$date"
-done
+#done
+}
+
+count
