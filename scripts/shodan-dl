@@ -1,6 +1,6 @@
 #!/bin/zsh -li
 
-vared -c -p "Countries: " countries
+export countries="$1"
 vared -c -p "After: " date
 
 for cn in "$countries";do
