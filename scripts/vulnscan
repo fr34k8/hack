@@ -1,9 +1,9 @@
-#!/bin/zsh
+#!/bin/zsh -li
 
 log="/pentest/logs/vulnscan.log"
 
 if [[ -e "$log" ]]; then
-	rm -vf "$log"
+	mv -vf "$log" "$log".$(now)
 fi
 
 msfconsole
