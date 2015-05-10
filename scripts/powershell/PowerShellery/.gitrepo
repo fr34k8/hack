@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/nullbind/Powershellery
+	branch = master
+	commit = 3d9b8053e5f386e62b6db432ace502b1f7ea6d53
+	parent = b29cbe8d7a8103f0123d401d3ecfcdd086a3c890
+	cmdver = 0.2.1
