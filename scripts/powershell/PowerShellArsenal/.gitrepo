@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/mattifestation/PowerShellArsenal
+	branch = master
+	commit = 797440131fe6a6cba7c356b8d76987e3d4c4df7b
+	parent = 0361936aac9fb0496a19a5bb6601988324156d03
+	cmdver = 0.2.1
