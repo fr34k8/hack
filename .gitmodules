@@ -1,6 +1,3 @@
 [submodule "scripts/powershell/powertools"]
 	path = scripts/powershell/powertools
 	url = git://github.com/Veil-Framework/PowerTools
-[submodule "scripts/powershell/nishang"]
-	path = scripts/powershell/nishang
-	url = https://github.com/samratashok/nishang
