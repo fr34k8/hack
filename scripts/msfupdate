@@ -1,0 +1,5 @@
+#!/bin/zsh -li
+
+cd /usr/share/metasploit
+git pull
+./msfupdate
