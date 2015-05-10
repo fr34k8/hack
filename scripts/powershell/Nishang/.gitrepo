@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/samratashok/nishang
+	branch = master
+	commit = af0fbb1b93190f4415b9e86d4c7a471f28e27d24
+	parent = db6e4b9c2470590f90ddc01cc3c9887a27de9575
+	cmdver = 0.2.1
