@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/mattifestation/PowerSploit
+	branch = master
+	commit = 2153a0a0b05ce5cdacceefeefe46b30f20caf3db
+	parent = 1cfdc6bb9d04fbd500e66b39d67d84828ee35891
+	cmdver = 0.2.1
