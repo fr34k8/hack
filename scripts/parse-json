@@ -8,20 +8,24 @@ function parse () {
 
 	if [[ -e "$port" ]]; then
 		mv "$port" "$port".old
-		shodan parse --no-color --fields port,ip_str "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port".new
-#		comm -23 "$port".new "$port.old" > "$port"
-		eh -4 -d "$port".* |sort -u > "$port"
-		rm "$port".*
+		shodan parse --no-color --fields port,ip_str "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port".latest
+		comm -23 "$port".latest "$port".old |sort -u >> "$port".new
 	else
 		shodan parse --no-color --fields port,ip_str "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port"
 	fi
 
+	eh -4 -d "$port".{new,old} |sort -u >> "$port"
 }
 
 function count () {
-# Totals
-	echo "Totals:"
-	echo ""$port"": $(eh -4 -d "$port"  |wc -l)""
+	if [[ ! -z $(cat "$port".new) ]];then
+		echo ""$port" (new)": $(eh -4 -d "$port".new  |wc -l)""
+		echo ""$port" (total)": $(eh -4 -d "$port"  |wc -l)""
+	else
+		echo ""$port"": $(eh -4 -d "$port"  |wc -l)""
+	fi
+
+	rm "$port".{old,latest}
 }
 
 for port in "$ports[@]"; do

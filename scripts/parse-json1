@@ -1,0 +1,34 @@
+#!/bin/zsh -li
+
+export file="$1"
+
+ports=( 80 8080 443 )
+
+function parse () {
+
+	if [[ -e "$port" ]]; then
+		mv "$port" "$port".old
+		shodan parse --no-color --fields port,ip_str "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port".latest
+		comm -23 "$port".latest "$port".old |sort -u >> "$port".new
+	else
+		shodan parse --no-color --fields port,ip_str "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port"
+	fi
+
+	eh -4 -d "$port".{new,old} |sort -u >> "$port"
+}
+
+function count () {
+	if [[ ! -z $(cat "$port".new) ]];then
+		echo ""$port" (new)": $(eh -4 -d "$port".new  |wc -l)""
+		echo ""$port"": $(eh -4 -d "$port"  |wc -l)""
+	else
+		echo ""$port"": $(eh -4 -d "$port"  |wc -l)""
+	fi
+
+	rm "$port".{old,latest}
+}
+
+for port in "$ports[@]"; do
+	parse
+	count
+done
