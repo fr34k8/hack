@@ -6,6 +6,6 @@
 [subrepo]
 	remote = https://github.com/nullbind/Powershellery
 	branch = master
-	commit = 3d9b8053e5f386e62b6db432ace502b1f7ea6d53
-	parent = b29cbe8d7a8103f0123d401d3ecfcdd086a3c890
+	commit = f6c9a574186c37203fb84828cfabf9e8690b5948
+	parent = 8344f34d01acc8f40654870620ec504749b997c2
 	cmdver = 0.2.1
