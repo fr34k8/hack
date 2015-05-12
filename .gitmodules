@@ -1,3 +1,0 @@
-[submodule "scripts/powershell/powertools"]
-	path = scripts/powershell/powertools
-	url = git://github.com/Veil-Framework/PowerTools
