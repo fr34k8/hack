@@ -21,11 +21,10 @@ function parse () {
 function count () {
 	if [[ -e "$port".new ]];then
 		echo ""$port" (new)": $(eh -4 -d "$port".new  |wc -l)""
-#		echo ""$port" (total)": $(eh -4 -d "$port"  |wc -l)""
-	fi
-#	else
 		echo ""$port" (total)": $(eh -4 -d "$port"  |wc -l)""
-#	fi
+	else
+		echo ""$port" (total)": $(eh -4 -d "$port"  |wc -l)""
+	fi
 
 	rm "$port".{old,latest}
 }

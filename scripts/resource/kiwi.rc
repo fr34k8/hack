@@ -1,5 +1,0 @@
-clear
-multi_meter_cmd -c 'getsystem' -s all
-clear
-multi_meter_cmd -c 'load kiwi' -s all
-multi_meter_cmd -c 'creds_wdigest' -s all

