@@ -11,6 +11,7 @@ set SSL true
 <ruby>
 
 maxjobs = 50
+verbose = 1
 
 if (framework.datastore['THREADS'] == nil)
 	run_single("setg THREADS 200")
