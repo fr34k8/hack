@@ -6,21 +6,18 @@ ports=(
 	443
 )
 
-export dir="$(pwd)"
 export log="$1"
 
-echo "Will parse "$log" and save results in "$dir""
-
 function parse () {
-	if [[ -e "$dir"/"$port" ]];then
-		mv -vf "$dir"/"$port" "$dir"/"$port".old
+	if [[ -e ./"$port" ]];then
+		mv -vf /"$port" ./"$port".old
 	fi
 
-	egrep ":"$port"\b .*does not require" "$log" | eh -4 -d |sort -u > "$dir"/"$port"
+	egrep ":"$port"\b .*does not require" "$log" | eh -4 -d |sort -u > ./"$port".latest
 }
 
 function count () {
-	wc -l "$dir"/"$port"
+	wc -l ./"$port"
 }
 
 for port in $ports;do

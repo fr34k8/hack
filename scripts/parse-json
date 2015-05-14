@@ -18,7 +18,7 @@ function parse () {
 }
 
 function count () {
-	if [[ ! -z $(cat "$port".new) ]];then
+	if [[ -e "$port".new ]];then
 		echo ""$port" (new)": $(eh -4 -d "$port".new  |wc -l)""
 		echo ""$port" (total)": $(eh -4 -d "$port"  |wc -l)""
 	else
