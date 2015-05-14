@@ -10,14 +10,24 @@ export log="$1"
 
 function parse () {
 	if [[ -e ./"$port" ]];then
-		mv -vf /"$port" ./"$port".old
+		mv -vf ./"$port" ./"$port".old
+		egrep ":"$port"\b .*does not require" "$log" | eh -4 -d |sort -u > ./"$port".latest
+		comm -23 "$port".latest "$port".old |sort -u > "$port".new
+	else
+		egrep ":"$port"\b .*does not require" "$log" | eh -4 -d |sort -u > ./"$port"
 	fi
-
-	egrep ":"$port"\b .*does not require" "$log" | eh -4 -d |sort -u > ./"$port".latest
 }
 
 function count () {
-	wc -l ./"$port"
+	if [[ -e "$port".new ]];then
+		echo ""$port" (new)": $(eh -4 -d "$port".new  |wc -l)""
+#		echo ""$port" (total)": $(eh -4 -d "$port"  |wc -l)""
+	fi
+#	else
+		echo ""$port" (total)": $(eh -4 -d "$port"  |wc -l)""
+#	fi
+
+	rm "$port".{old,latest}
 }
 
 for port in $ports;do
