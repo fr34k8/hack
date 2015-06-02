@@ -8,7 +8,7 @@ function parse () {
 
 	if [[ -e "$port" ]]; then
 		mv "$port" "$port".old
-		csvcut -c Port,IP "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port".latest
+		csvcut -c port,ip,date "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port".latest
 		comm -23 "$port".latest "$port".old |sort -u > "$port".new
 	else
 		csvcut -c Port,IP "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port".latest

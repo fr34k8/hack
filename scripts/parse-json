@@ -8,7 +8,7 @@ function parse () {
 
 	if [[ -e "$port" ]]; then
 		mv "$port" "$port".old
-		shodan parse --no-color --fields port,ip_str "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port".latest
+		shodan parse --no-color --fields port,ip_str,timestamp "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port".latest
 		comm -23 "$port".latest "$port".old |sort -u > "$port".new
 	else
 		shodan parse --no-color --fields port,ip_str "$file" |egrep "^"$port"\b" |eh -4 -d |sort -u > "$port"
