@@ -1,0 +1,40 @@
+global('@old', '@new', '@all')
+
+# internal list to keep track of all active beacons
+%beaconHosts = %();
+
+on heartbeat_5s {
+	# get all the active beacons from the database
+	@beacons = call('beacon.list');
+
+	%beaconHosts = %();
+
+	foreach %beacon (@beacons) {
+		$internal = %beacon["internal"];
+		$bid = %beacon["id"];
+		$name = %beacon["computer"];
+		push(@all, $bid);
+	}
+
+		@new = removeAll(copy(@all), @old);
+
+		if ($internal ne "") {
+			%beaconHosts[$internal] = %beacon["id"];
+		}
+
+	foreach $bid (@new)	{
+		%beaconHosts[$internal] = %beacon["id"];
+		%beaconHosts[$name] = %beacon["computer"];
+
+		if ($internal in %beaconHosts)
+		{
+			bnote("$bid", "k")
+		}
+		else
+		{
+			bnote("$bid", "new")
+		}
+	}
+
+	@old = @all;
+}

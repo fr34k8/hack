@@ -1,0 +1,54 @@
+global('@old');
+
+%bhosts = %();
+
+on heartbeat_10s {
+   local('@beacons $beacon $bid %data @address $note @new @all');
+
+   %bhosts = %();
+
+   # grab all beacon ids AND build a map between ids and data
+   @beacons = beacons();
+   foreach $beacon (@beacons) {
+      $bid = $beacon['id'];
+      $internal = $beacon['internal'];
+      $note = $beacon['note'];
+
+      if ($internal ne ""){
+         %bhosts[$internal] = $beacon["id"];
+      }
+
+      if ($note ne ""){
+         %bhosts[$note] = $beacon["note"];
+      }
+
+      push(@all, $bid);
+   }
+
+   # remove old beacons from current list... I use copy(@all)
+   # because removeAll is destructive to its first argument
+   @new = removeAll(copy(@all), @old);
+
+   # with old beacons removed; we have our new beacons...
+   foreach $bid (@new) {
+      fire_event("beacon_initial", $bid);
+   }
+
+   # make our list of all beacons into our old list now
+   @old = @all;
+}
+
+on beacon_initial {
+   if (($internal in %bhosts) && ($note !in %bhosts))
+   {
+      bnote("$1", "@")
+   }
+   else if (($internal !in %bhosts) && ($note !in %bhosts))
+   {
+      bnote("$1", "new")
+   }
+   else if (($internal in %bhosts) && ($note eq ""))
+   {
+      bnote("$1", "k")
+   }
+}

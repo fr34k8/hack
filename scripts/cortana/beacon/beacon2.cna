@@ -1,14 +1,17 @@
 global('@old');
 
 on heartbeat_10s {
-   local('@beacons $beacon $bid %data @new @all');
+   local('@beacons $beacon $bid %data @addresses @new @all');
 
    # grab all beacon ids AND build a map between ids and data
    @beacons = beacons();
    foreach $beacon (@beacons) {
       $bid = $beacon['id'];
+      $address = $beacon['internal'];
       %data[$bid] = $beacon;
-      push(@all, $bid);
+#      push(@all, $bid, $address);
+#      push(@addresses, $address);
+
    }
 
    # remove old beacons from current list... I use copy(@all)
@@ -16,8 +19,8 @@ on heartbeat_10s {
    @new = removeAll(copy(@all), @old);
 
    # with old beacons removed; we have our new beacons...
-   foreach $bid (@new) {
-      fire_event("beacon_initial", $bid, %data[$bid]);
+   foreach $bid (@beacons) {
+      fire_event("beacon_initial", $bid, %data[$bid], $address);
    }
 
    # make our list of all beacons into our old list now
@@ -25,9 +28,16 @@ on heartbeat_10s {
 }
 
 on beacon_initial {
-   local('$key $value');
-   println("I have a beacon: $1 from " . $2['internal']);
-   foreach $key => $value ($2) {
-      println("\t $+ $[10]key = $value");
-   }
+
+   binfo("$1", "$note");
+
+   # if ($address !in @old)
+   # {
+   #    bnote("$1", "new")
+   # }
+   # else
+   # {
+   #    println("Killing beacon: $1 from " . $2['computer']);
+#      call('beacon.task', $1, pack("II", 0x03, 0), lhost());
+   # }
 }
