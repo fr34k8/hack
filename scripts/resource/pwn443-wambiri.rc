@@ -10,7 +10,7 @@ set SSL true
 
 <ruby>
 
-maxjobs = 50
+maxjobs = 25
 verbose = 1
 
 if (framework.datastore['THREADS'] == nil)
