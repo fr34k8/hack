@@ -4,3 +4,6 @@
 [submodule "scripts/powershell/nishang"]
 	path = scripts/powershell/nishang
 	url = https://github.com/samratashok/nishang
+[submodule "scripts/powershell/powersploit"]
+	path = scripts/powershell/powersploit
+	url = https://github.com/mattifestation/PowerSploit
