@@ -7,3 +7,6 @@
 [submodule "scripts/powershell/powersploit"]
 	path = scripts/powershell/powersploit
 	url = https://github.com/mattifestation/PowerSploit
+[submodule "scripts/powershell/powerfun"]
+	path = scripts/powershell/powerfun
+	url = github:pwnaus/powerfun
